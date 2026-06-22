@@ -28,3 +28,17 @@ export const Toast = Swal.mixin({
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 })
+
+export const confirmacion = (mensaje, icono, textoBoton) => {
+    return Swal.fire({
+        title: mensaje,
+        icon: icono,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: textoBoton,
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        return result.isConfirmed;
+    });
+}

@@ -80,4 +80,26 @@ class UsuarioController
             ]);
         }
     }
+
+    public static function eliminarAPI()
+    {
+        getHeadersApi();
+
+        try {
+            $usuario = Usuario::find($_POST['usu_id']);
+            $usuario->sincronizar(['usu_situacion' => 0]);
+            $usuario->actualizar();
+
+            echo json_encode([
+                'codigo' => 1,
+                'mensaje' => 'Usuario eliminado correctamente',
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'Error al eliminar usuario',
+                'detalle' => $e->getMessage()
+            ]);
+        }
+    }
 }

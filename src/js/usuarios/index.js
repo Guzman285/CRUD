@@ -1,5 +1,5 @@
 import { lenguaje } from '../lenguaje'; //archivo que ya esta en el MVC y pone el datatable en español
-import { Toast, validarFormulario } from '../funciones'; // muestra notificacion y valida formularios
+import { Toast, validarFormulario, confirmacion } from '../funciones'; // muestra notificacion y valida formularios
 import { Modal } from 'bootstrap'; //se necesita para abrir los modales desde JS
 import DataTable from 'datatables.net-bs5'; //la libreria para los datatables
 
@@ -150,6 +150,48 @@ const editar = (e) => {
     modalBS.show();
 }
 
+const eliminarApi = async (e) => {
+    const dataset = e.currentTarget.dataset;
+    const id = dataset.id;
+
+    const confirmar = await confirmacion('¿Está seguro que desea eliminar este usuario?', 'warning', 'Si, eliminar');
+    
+    if(confirmar) {
+        try {
+            const url = `${RUTA_APP}/API/usuarios/eliminar`;
+            const headers = new Headers();
+            headers.append('X-Requested-With', 'fetch');
+            const body = new FormData();
+            body.append('usu_id', id);
+            const config = {
+                method: 'POST',
+                headers,
+                body,
+            }
+
+            const respuesta = await fetch(url, config);
+            const data = await respuesta.json();
+            const { codigo, mensaje } = data;
+
+            if(codigo == 1) {
+                Toast.fire({
+                    icon: 'success',
+                    title: mensaje,
+                });
+                buscarApi();
+            } else {
+                Toast.fire({
+                    icon: 'error',
+                    title: mensaje,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 buscarApi();
 formUsuario.addEventListener('submit', guardarApi);
 datatableUsuarios.on('click', '.editar', editar);
+datatableUsuarios.on('click', '.eliminar', eliminarApi);
