@@ -37,4 +37,25 @@ class UsuarioController
             ]);
         }
     }
+
+    public static function guardarAPI()
+    {
+        getHeadersApi();
+
+        try {
+            $usuario = new Usuario($_POST);
+            $usuario->crear();
+
+            echo json_encode([
+                'codigo' => 1,
+                'mensaje' => 'Usuario creado correctamente',
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'Error al crear usuario',
+                'detalle' => $e->getMessage()
+            ]);
+        }
+    }
 }

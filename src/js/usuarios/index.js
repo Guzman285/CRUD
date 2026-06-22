@@ -79,4 +79,57 @@ const buscarApi = async () => {
     }
 }
 
+const guardarApi = async (e) => {
+    e.preventDefault();
+    spanLoader.style.display = '';
+    btnGuardar.disabled = true;
+
+    if(!validarFormulario(formUsuario, ['usu_id'])) {
+        Toast.fire({
+            icon: 'warning',
+            title: 'Revise la información ingresada',
+        });
+        spanLoader.style.display = 'none';
+        btnGuardar.disabled = false;
+        return;
+    }
+
+    try {
+        const url = `${RUTA_APP}/API/usuarios/guardar`;
+        const headers = new Headers();
+        headers.append('X-Requested-With', 'fetch');
+        const body = new FormData(formUsuario);
+        const config = {
+            method: 'POST',
+            headers,
+            body,
+        }
+
+        const respuesta = await fetch(url, config);
+        const data = await respuesta.json();
+        const { codigo, mensaje } = data;
+
+        if(codigo == 1) {
+            Toast.fire({
+                icon: 'success',
+                title: mensaje,
+            });
+            formUsuario.reset();
+            modalBS.hide();
+            buscarApi();
+        } else {
+            Toast.fire({
+                icon: 'error',
+                title: mensaje,
+            });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    spanLoader.style.display = 'none';
+    btnGuardar.disabled = false;
+}
+
 buscarApi();
+formUsuario.addEventListener('submit', guardarApi);
