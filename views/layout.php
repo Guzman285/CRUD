@@ -7,7 +7,7 @@
     <script src="build/js/app.js"></script>
     <link rel="shortcut icon" href="<?= asset('images/king.png') ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= asset('build/styles.css') ?>">
-    <title>DemoApp</title>
+    <title>CRUD</title>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
             </button>
             <a class="navbar-brand" href="/<?= $_ENV['APP_NAME'] ?>/">
                 <img src="<?= asset('./images/king.png') ?>" width="35px'" alt="cit">
-                Aplicaciones
+                Dashboard
             </a>
             <div class="collapse navbar-collapse" id="navbarToggler">
 
@@ -70,7 +70,7 @@
         <div class="row justify-content-center text-center">
             <div class="col-12">
                 <p style="font-size:xx-small; font-weight: bold;">
-                    Comando de Informática y Tecnología, <?= date('Y') ?> &copy;
+                    Practicas de CRUD <?= date('Y') ?> &copy;
                 </p>
             </div>
         </div>
