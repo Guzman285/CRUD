@@ -95,7 +95,8 @@ const guardarApi = async (e) => {
     }
 
     try {
-        const url = `${RUTA_APP}/API/usuarios/guardar`;
+        const usu_id = formUsuario.usu_id.value;
+const url = usu_id ? `${RUTA_APP}/API/usuarios/modificar` : `${RUTA_APP}/API/usuarios/guardar`;
         const headers = new Headers();
         headers.append('X-Requested-With', 'fetch');
         const body = new FormData(formUsuario);
@@ -131,5 +132,24 @@ const guardarApi = async (e) => {
     btnGuardar.disabled = false;
 }
 
+const editar = (e) => {
+    const dataset = e.currentTarget.dataset;
+    const id = dataset.id;
+
+    // Llenamos el formulario con los datos de la fila
+    const rowData = datatableUsuarios.row(e.currentTarget.closest('tr')).data();
+    
+    formUsuario.usu_id.value = rowData.usu_id;
+    formUsuario.usu_nombre.value = rowData.usu_nombre;
+    formUsuario.usu_apellido.value = rowData.usu_apellido;
+    formUsuario.usu_correo.value = rowData.usu_correo;
+
+    // Cambiamos el título del modal
+    document.getElementById('modalTitleId').textContent = 'Editar Usuario';
+
+    modalBS.show();
+}
+
 buscarApi();
 formUsuario.addEventListener('submit', guardarApi);
+datatableUsuarios.on('click', '.editar', editar);

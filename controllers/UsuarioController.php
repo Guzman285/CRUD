@@ -58,4 +58,26 @@ class UsuarioController
             ]);
         }
     }
+
+    public static function modificarAPI()
+    {
+        getHeadersApi();
+
+        try {
+            $usuario = Usuario::find($_POST['usu_id']);
+            $usuario->sincronizar($_POST);
+            $usuario->actualizar();
+
+            echo json_encode([
+                'codigo' => 1,
+                'mensaje' => 'Usuario actualizado correctamente',
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'codigo' => 0,
+                'mensaje' => 'Error al actualizar usuario',
+                'detalle' => $e->getMessage()
+            ]);
+        }
+    }
 }
